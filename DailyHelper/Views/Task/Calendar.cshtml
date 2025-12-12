@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DailyHelper.Models.TaskItem>
+@{ ViewBag.Title = "Task Calendar"; }
+
+<h2>Dynamic Task Calendar</h2>
+
+<div class="card mb-4 border-primary shadow-sm">
+    <div class="card-header bg-primary text-white">
+        Happening Today (@DateTime.Today.ToShortDateString())
+    </div>
+    <div class="card-body">
+        @if (ViewBag.TodayTasks.Count > 0)
+        {
+            foreach (var t in ViewBag.TodayTasks)
+            {
+                <p><strong>@t.Title</strong> - <span class="badge bg-secondary">@t.Status</span></p>
+            }
+        }
+        else
+        {
+            <p class="text-muted">No tasks scheduled for today. Good job!</p>
+        }
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var group in Model.GroupBy(x => x.DueDate.Date).OrderBy(x => x.Key))
+    {
+        <div class="col-md-3 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header text-center bg-light">
+                    <strong>@group.Key.ToString("ddd, MMM dd")</strong>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var task in group)
+                    {
+                        <li class="list-group-item">
+                            @task.Title
+                            <span class="badge @(task.Status=="Done"?"bg-success":"bg-warning text-dark") float-end">@task.Status</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+</div>

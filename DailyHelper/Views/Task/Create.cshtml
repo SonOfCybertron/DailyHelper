@@ -1,0 +1,36 @@
+﻿@model DailyHelper.Models.TaskItem
+@{ ViewBag.Title = "Create New Task"; }
+
+<h2>Create New Task</h2>
+<hr />
+
+@using (Html.BeginForm("Create", "Task", FormMethod.Post, new { @class = "card p-4 shadow-sm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label class="form-label">Due Date</label>
+                @Html.TextBoxFor(model => model.DueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 4 })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Task</button>
+    <a href="/Task/Index" class="btn btn-secondary mt-2">Back to List</a>
+}

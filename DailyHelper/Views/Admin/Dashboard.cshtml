@@ -1,0 +1,55 @@
+﻿@model IEnumerable<DailyHelper.Models.TaskItem>
+@{ ViewBag.Title = "Admin Dashboard"; }
+
+<h2>Admin Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-info text-white p-3 shadow">
+            <h5>Total Users</h5>
+            <h3>@ViewBag.TotalUsers</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white p-3 shadow">
+            <h5>Total Tasks</h5>
+            <h3>@ViewBag.TotalTasks</h3>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 shadow">
+            <form action="/Admin/CreateAnnouncement" method="post">
+                <label>Post System Announcement:</label>
+                <div class="input-group mt-2">
+                    <input type="text" name="message" class="form-control" placeholder="Enter message..." required />
+                    <button class="btn btn-primary">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<h3>Monitor All User Tasks</h3>
+<table class="table table-bordered bg-white shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Owner</th>
+            <th>Task</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(item.User != null ? item.User.Username : "Unknown")</td>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.DueDate.ToShortDateString()</td>
+                <td><span class="badge @(item.Status=="Done"?"bg-success":"bg-warning text-dark")">@item.Status</span></td>
+            </tr>
+        }
+    </tbody>
+</table>

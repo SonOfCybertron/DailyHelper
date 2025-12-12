@@ -1,0 +1,45 @@
+﻿@model DailyHelper.Models.TaskItem
+@{ ViewBag.Title = "Edit Task"; }
+
+<h2>Edit Task: @Model.Title</h2>
+<hr />
+
+@using (Html.BeginForm("Edit", "Task", FormMethod.Post, new { @class = "card p-4 shadow-sm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.TaskID)
+    @Html.HiddenFor(model => model.UserID)
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-3">
+                <label class="form-label">Due Date</label>
+                @Html.TextBoxFor(model => model.DueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                @Html.DropDownListFor(model => model.Status, new SelectList(new[] { "Pending", "In Progress", "Done" }), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 4 })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-warning">Update Task</button>
+    <a href="/Task/Index" class="btn btn-secondary mt-2">Cancel</a>
+}

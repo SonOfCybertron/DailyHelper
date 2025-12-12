@@ -1,0 +1,48 @@
+﻿@model IEnumerable<DailyHelper.Models.TaskItem>
+@{ ViewBag.Title = "My Tasks"; }
+
+<div class="row">
+    <div class="col-md-12">
+        @if (ViewBag.Announcements != null)
+        {
+            foreach (var ann in ViewBag.Announcements)
+            {
+                <div class="alert alert-info py-2">
+                    <strong>Notice (@ann.DatePosted.ToShortDateString()):</strong> @ann.Message
+                </div>
+            }
+        }
+    </div>
+
+    <div class="col-md-12">
+        <h3>My Tasks</h3>
+        <a href="/Task/Create" class="btn btn-primary mb-3">Add New Task</a>
+
+        <table class="table table-hover bg-white shadow-sm">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.DueDate.ToShortDateString()</td>
+                        <td>
+                            <span class="badge @(item.Status=="Done"?"bg-success":"bg-warning text-dark")">@item.Status</span>
+                        </td>
+                        <td>
+                            <a href="/Task/Edit/@item.TaskID" class="text-primary">Edit</a> |
+                            <a href="/Task/Delete/@item.TaskID" class="text-danger" onclick="return confirm('Confirm deletion?');">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
